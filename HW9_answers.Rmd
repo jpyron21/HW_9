@@ -1,0 +1,50 @@
+---
+title: "HW9_Answers"
+author: "Zack Grzywacz"
+date: "October 29, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(markdown)
+library(knitr)
+library(kableExtra)
+```
+
+1. Are the data in a flat file format? 
+
+```{r}
+gap_co2 <- read.csv("./data/co2_emissions_tonnes_per_person_gapminder.csv")
+```
+
+No, this is in an excel .csv format.
+
+2. What is the structure of the data?  Are there any variables you might need to convert prior to manipulating the data?
+
+```{r}
+str(gap_co2)
+```
+
+This data is in a dataframe. All variables are numbers except for "country", which is a factor. We will convert it to a character vector.
+
+```{r}
+gap_co2$country <- as.character(gap_co2$country)
+```
+
+
+3. What countries had per capita emissions larger than the 95th percentile in 2014? Make a table of their names and per capita emissions. Hint: Use quantile() to find the 95% cutoff.
+
+```{r}
+quantile(gap_co2$X2014, probs = seq(0, 1, 0.05))
+```
+
+The cutoff is 15.4
+
+```{r}
+gap_co2$country[gap_co2$X2014 > 15.40000]
+```
+
