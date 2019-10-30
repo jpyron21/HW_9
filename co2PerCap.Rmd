@@ -1,6 +1,6 @@
 ---
 title: "HW_9 CO2"
-author: "Amy Hessl"
+author: "Jaimee Pyron"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 ---
@@ -38,6 +38,7 @@ my_tab %>%
 ### Questions:
 
 1. Are the data in a flat file format? 
+Yes, a .csv is general considered flat file format. 
 
 2. What is the structure of the data?  Are there any variables you might need to convert prior to manipulating the data?
 
