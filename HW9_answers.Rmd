@@ -45,6 +45,25 @@ quantile(gap_co2$X2014, probs = seq(0, 1, 0.05))
 The cutoff is 15.4
 
 ```{r}
-gap_co2$country[gap_co2$X2014 > 15.40000]
+dat <- rep("NA", 9)
+topPercentile <- data.frame("Country"=dat, "PerCapEmissions 2014"=dat)
+topPercentile$Country <- gap_co2$country[gap_co2$X2014 > 15.40000]
+topPercentile$PerCapEmissions.2014 <- gap_co2$X2014[gap_co2$X2014 > 15.40000]
+topPercentile %>%
+  kable() %>%
+  kable_styling()
+```
+
+4. Make a table comparing the per capita emissions of the US and the world's highest per capita emitter (from above)  in 1925, 1950, and 2014. 
+
+```{r}
+dat <- rep("NA", 3)
+topEmitters <- data.frame("TopCountry"=dat, "United States"=dat)
+row.names(topEmitters) <- c("1925", "1950", "2014")
+topEmitters
+```
+
+```{r}
+gap_co2$X1925[139,184]
 ```
 
