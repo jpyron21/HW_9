@@ -42,11 +42,11 @@ gap_co2$country <- as.character(gap_co2$country)
 quantile(gap_co2$X2014, probs = seq(0, 1, 0.05))
 ```
 
-The cutoff is 15.4
+The cutoff is 15.4. We will create a data frame to fill with the countries that have 2014 emissions above this level, then create a table from this data. 
 
 ```{r}
 dat <- rep("NA", 9)
-topPercentile <- data.frame("Country"=dat, "PerCapEmissions 2014"=dat)
+topPercentile <- data.frame("Country"=dat, "PerCapEmissions.2014"=dat)
 topPercentile$Country <- gap_co2$country[gap_co2$X2014 > 15.40000]
 topPercentile$PerCapEmissions.2014 <- gap_co2$X2014[gap_co2$X2014 > 15.40000]
 topPercentile %>%
@@ -56,14 +56,25 @@ topPercentile %>%
 
 4. Make a table comparing the per capita emissions of the US and the world's highest per capita emitter (from above)  in 1925, 1950, and 2014. 
 
+The top emitter per capita is Qatar. We will create a data frame to compare Qatar and the USA. To help with adding data, we will convert the factors to character vectors.
+
 ```{r}
 dat <- rep("NA", 3)
-topEmitters <- data.frame("TopCountry"=dat, "United States"=dat)
+topEmitters <- data.frame("Qatar"=dat, "United.States"=dat)
 row.names(topEmitters) <- c("1925", "1950", "2014")
+topEmitters$Qatar <- as.character(topEmitters$Qatar)
+topEmitters$United.States <- as.character(topEmitters$United.States)
 topEmitters
 ```
 
+From here, the challenge is subsetting the data and inserting it in the data frame.
+
 ```{r}
-gap_co2$X1925[139,184]
+topEmitters[1,]<-gap_co2$X1925[c(139,184)]
+topEmitters[2,]<-gap_co2$X1950[c(139,184)]
+topEmitters[3,]<-gap_co2$X2014[c(139,184)]
+topEmitters %>%
+  kable() %>%
+  kable_styling()
 ```
 
