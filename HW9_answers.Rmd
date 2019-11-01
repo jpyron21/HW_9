@@ -1,7 +1,7 @@
 ---
 title: "HW9_Answers"
-author: "Zack Grzywacz"
-date: "October 29, 2019"
+author: "Zack Grzywacz and Jaimee Pyron"
+date: "October 31, 2019"
 output: html_document
 ---
 
@@ -21,7 +21,7 @@ library(kableExtra)
 gap_co2 <- read.csv("./data/co2_emissions_tonnes_per_person_gapminder.csv")
 ```
 
-No, this is in an excel .csv format.
+Yes, a .csv is considered flat file format. 
 
 2. What is the structure of the data?  Are there any variables you might need to convert prior to manipulating the data?
 
