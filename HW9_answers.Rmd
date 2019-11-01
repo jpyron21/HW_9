@@ -1,0 +1,52 @@
+---
+title: "HW9_answers.Rmd"
+author: "Jaimee Pyron"
+date: "10/31/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### Questions:
+
+1. Are the data in a flat file format? 
+Yes, a .csv is considered flat file format. 
+
+2. What is the structure of the data?  Are there any variables you might need to convert prior to manipulating the data?
+It is a data frame. All values are correctly labelled as numeric except country. This will need to be converted to character. This can be done
+as follows:
+```r
+emissions$country <- as.character(emissions$country)
+```
+
+3. What countries had per capita emissions larger than the 95th percentile in 2014? Make a table of their names and per capita emissions. Hint: Use quantile() to find the 95% cutoff.
+
+```{r, echo=FALSE}
+percentile = quantile(emissions$X2014, 0.95, na.rm=TRUE)
+dat <- rep("NA", 9)
+table <- data.frame("cntry"=dat, "perCapEm.2014"=dat)
+table$country <- gap_co2$cntry[emissions2$X2014 > 15.40000]
+table$perCapEm.2014 <- gap_co2$X2014[emissions$X2014 > 15.40000]
+table %>%
+  kable() %>%
+  kable_styling()
+```
+perc
+4. Make a table comparing the per capita emissions of the US and the world's highest per capita emitter (from above)  in 1925, 1950, and 2014.  
+
+```{r, echo=FALSE}
+val <- emissions[emissions$country %in% c("United States", "Qatar"), ]
+dat <- val[ , c("X1925", "X1950", "X2014")]
+top <- data.frame(dat)
+row.names(top) <- c("1925", "1950", "2014")
+column.names(top) <- ("Qatar","United States") 
+top %>%
+  kable() %>%
+  kable_styling()
+```
+
+
+
