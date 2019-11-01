@@ -1,7 +1,7 @@
 ---
-title: "HW9_answers.Rmd"
-author: "Jaimee Pyron"
-date: "10/31/2019"
+title: "HW9_Answers"
+author: "Zack Grzywacz and Jaimee Pyron"
+date: "October 31, 2019"
 output: html_document
 ---
 
@@ -9,44 +9,72 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
-### Questions:
+```{r}
+library(markdown)
+library(knitr)
+library(kableExtra)
+```
 
 1. Are the data in a flat file format? 
+
+```{r}
+gap_co2 <- read.csv("./data/co2_emissions_tonnes_per_person_gapminder.csv")
+```
+
 Yes, a .csv is considered flat file format. 
 
 2. What is the structure of the data?  Are there any variables you might need to convert prior to manipulating the data?
-It is a data frame. All values are correctly labelled as numeric except country. This will need to be converted to character. This can be done
-as follows:
-```r
-emissions$country <- as.character(emissions$country)
+
+```{r}
+str(gap_co2)
 ```
+
+This data is in a dataframe. All variables are numbers except for "country", which is a factor. We will convert it to a character vector.
+
+```{r}
+gap_co2$country <- as.character(gap_co2$country)
+```
+
 
 3. What countries had per capita emissions larger than the 95th percentile in 2014? Make a table of their names and per capita emissions. Hint: Use quantile() to find the 95% cutoff.
 
-```{r, echo=FALSE}
-percentile = quantile(emissions$X2014, 0.95, na.rm=TRUE)
+```{r}
+quantile(gap_co2$X2014, probs = seq(0, 1, 0.05))
+```
+
+The cutoff is 15.4. We will create a data frame to fill with the countries that have 2014 emissions above this level, then create a table from this data. 
+
+```{r}
 dat <- rep("NA", 9)
-table <- data.frame("cntry"=dat, "perCapEm.2014"=dat)
-table$country <- gap_co2$cntry[emissions2$X2014 > 15.40000]
-table$perCapEm.2014 <- gap_co2$X2014[emissions$X2014 > 15.40000]
-table %>%
-  kable() %>%
-  kable_styling()
-```
-perc
-4. Make a table comparing the per capita emissions of the US and the world's highest per capita emitter (from above)  in 1925, 1950, and 2014.  
-
-```{r, echo=FALSE}
-val <- emissions[emissions$country %in% c("United States", "Qatar"), ]
-dat <- val[ , c("X1925", "X1950", "X2014")]
-top <- data.frame(dat)
-row.names(top) <- c("1925", "1950", "2014")
-column.names(top) <- ("Qatar","United States") 
-top %>%
+topPercentile <- data.frame("Country"=dat, "PerCapEmissions.2014"=dat)
+topPercentile$Country <- gap_co2$country[gap_co2$X2014 > 15.40000]
+topPercentile$PerCapEmissions.2014 <- gap_co2$X2014[gap_co2$X2014 > 15.40000]
+topPercentile %>%
   kable() %>%
   kable_styling()
 ```
 
+4. Make a table comparing the per capita emissions of the US and the world's highest per capita emitter (from above)  in 1925, 1950, and 2014. 
 
+The top emitter per capita is Qatar. We will create a data frame to compare Qatar and the USA. To help with adding data, we will convert the factors to character vectors.
+
+```{r}
+dat <- rep("NA", 3)
+topEmitters <- data.frame("Qatar"=dat, "United.States"=dat)
+row.names(topEmitters) <- c("1925", "1950", "2014")
+topEmitters$Qatar <- as.character(topEmitters$Qatar)
+topEmitters$United.States <- as.character(topEmitters$United.States)
+topEmitters
+```
+
+From here, the challenge is subsetting the data and inserting it in the data frame.
+
+```{r}
+topEmitters[1,]<-gap_co2$X1925[c(139,184)]
+topEmitters[2,]<-gap_co2$X1950[c(139,184)]
+topEmitters[3,]<-gap_co2$X2014[c(139,184)]
+topEmitters %>%
+  kable() %>%
+  kable_styling()
+```
 
