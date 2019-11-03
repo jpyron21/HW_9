@@ -22,6 +22,7 @@ gap_co2 <- read.csv("./data/co2_emissions_tonnes_per_person_gapminder.csv")
 ```
 
 Yes, a .csv is considered flat file format. 
+# Though note that each row is not a single observation.
 
 2. What is the structure of the data?  Are there any variables you might need to convert prior to manipulating the data?
 
@@ -40,6 +41,7 @@ gap_co2$country <- as.character(gap_co2$country)
 
 ```{r}
 quantile(gap_co2$X2014, probs = seq(0, 1, 0.05))
+cutoff <- quantile(gap_co2$X2014, probs = 0.95) # then you can directly use this variable in the next step.
 ```
 
 The cutoff is 15.4. We will create a data frame to fill with the countries that have 2014 emissions above this level, then create a table from this data. 
